@@ -1,0 +1,120 @@
+/*
+ * FrontendNow – Design Tokens (Team ClubMates)
+ *
+ * Aufbau:
+ *   1. Primitive Tokens   → alle Rohwerte. Werden nie direkt in Komponenten verwendet.
+ *   2. Semantische Tokens → Verwendungszweck. Enthalten keine Rohwerte, nur
+ *                           Verweise auf Primitive. Tailwind erzeugt daraus Klassen
+ *                           wie bg-surface, text-primary, p-4, font-heading.
+ *   3. Theme-Erweiterung  → vorbereitet, aber noch nicht umgesetzt (Dark Mode folgt).
+ *
+ * Wird in src/assets/styles/main.css nach `@import "tailwindcss";` importiert.
+ */
+
+/* ------------------------------------------------------------------ */
+/* 1. Primitive Tokens (Rohwerte)                                      */
+/* ------------------------------------------------------------------ */
+:root {
+  /* Farben – neutral */
+  --palette-white: #ffffff;
+  --palette-mauve-50: #f5f0f6;
+  --palette-mauve-200: #d9d0db;
+  --palette-mauve-400: #8c8491;
+  --palette-mauve-600: #6b6470;
+  --palette-ink-900: #222222;
+
+  /* Farben – Akzente */
+  --palette-lime-400: #b6ff56;
+  --palette-coral-500: #ee6352;
+  --palette-coral-700: #b24a3d;
+  --palette-violet-500: #907ad6;
+  --palette-violet-700: #6c5ba0;
+
+  /* Schriftfamilien */
+  --palette-font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --palette-font-sans: "IBM Plex Sans", system-ui, sans-serif;
+
+  /* Schriftgrößen (Basis 16 px, Faktor 1,25) */
+  --palette-size-12: 0.75rem;
+  --palette-size-14: 0.875rem;
+  --palette-size-16: 1rem;
+  --palette-size-20: 1.25rem;
+  --palette-size-25: 1.5625rem;
+  --palette-size-31: 1.953rem;
+  --palette-size-39: 2.441rem;
+
+  /* Zeilenhöhen */
+  --palette-leading-115: 1.15;
+  --palette-leading-120: 1.2;
+  --palette-leading-130: 1.3;
+  --palette-leading-140: 1.4;
+  --palette-leading-150: 1.5;
+  --palette-leading-160: 1.6;
+
+  /* Abstände (4-px-Raster) */
+  --palette-space-0: 0;
+  --palette-space-4: 0.25rem;
+  --palette-space-8: 0.5rem;
+  --palette-space-12: 0.75rem;
+  --palette-space-16: 1rem;
+  --palette-space-24: 1.5rem;
+  --palette-space-32: 2rem;
+  --palette-space-48: 3rem;
+  --palette-space-64: 4rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* 2. Semantische Tokens (Standard-Theme: Light)                       */
+/* ------------------------------------------------------------------ */
+@theme {
+  /* Nur unsere Tokens zulassen, Tailwind-Standardwerte entfernen */
+  --color-*: initial;
+  --font-*: initial;
+  --spacing-*: initial;
+  --text-*: initial;
+
+  /* Flächen */
+  --color-surface: var(--palette-mauve-50);
+  --color-surface-raised: var(--palette-white);
+
+  /* Text */
+  --color-primary: var(--palette-ink-900);
+  --color-muted: var(--palette-mauve-600);
+  --color-on-accent: var(--palette-ink-900);
+  --color-link: var(--palette-violet-700);
+  --color-alert-text: var(--palette-coral-700);
+
+  /* Akzente & Highlights (als Fläche, Text darauf: on-accent) */
+  --color-accent-primary: var(--palette-lime-400);     /* „In Mein Programm“, CTA */
+  --color-accent-secondary: var(--palette-violet-500); /* Tags, Tracks */
+  --color-accent-alert: var(--palette-coral-500);      /* Zeitkonflikt */
+
+  /* Linien & Fokus */
+  --color-border: var(--palette-mauve-200);        /* dekorativ */
+  --color-border-strong: var(--palette-mauve-400); /* Formularfelder */
+  --color-focus: var(--palette-violet-700);
+
+  /* Schriften */
+  --font-heading: var(--palette-font-mono);
+  --font-body: var(--palette-font-sans);
+
+  /* Typografie */
+  --text-xs: var(--palette-size-12);   --text-xs--line-height: var(--palette-leading-150);
+  --text-sm: var(--palette-size-14);   --text-sm--line-height: var(--palette-leading-150);
+  --text-base: var(--palette-size-16); --text-base--line-height: var(--palette-leading-160);
+  --text-lg: var(--palette-size-20);   --text-lg--line-height: var(--palette-leading-140);
+  --text-xl: var(--palette-size-25);   --text-xl--line-height: var(--palette-leading-130);
+  --text-2xl: var(--palette-size-31);  --text-2xl--line-height: var(--palette-leading-120);
+  --text-3xl: var(--palette-size-39);  --text-3xl--line-height: var(--palette-leading-115);
+
+  /* Abstände */
+  --spacing-0: var(--palette-space-0);
+  --spacing-1: var(--palette-space-4);
+  --spacing-2: var(--palette-space-8);
+  --spacing-3: var(--palette-space-12);
+  --spacing-4: var(--palette-space-16);
+  --spacing-6: var(--palette-space-24);
+  --spacing-8: var(--palette-space-32);
+  --spacing-12: var(--palette-space-48);
+  --spacing-16: var(--palette-space-64);
+}

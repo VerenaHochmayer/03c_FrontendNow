@@ -4,59 +4,45 @@
 
 Trotz der kleinen Datenmenge braucht die Anwendung **mehrere Seitentypen**:
 
-- **Übersichten:** Sessions (mit Filter nach Track, Tag, Level, Speaker) und Speaker
-- **Detailseiten:** eine pro Session (20) und eine pro Speaker (18), mit eigenen URLs
+- **Übersichten:** Sessions (Filter nach Track, Tag, Level, Speaker) und Speaker
+- **Detailseiten:** pro Session (20) und eine pro Speaker (18), mit eigenen URLs
 - **Personalisierter Timetable:** „Mein Programm“
 - **Startseite**
 
 Daraus ergeben sich die Kriterien für die Wahl des Setups:
 
 1. **Routing-Bedarf:** ca. 6 Routen, davon 2 dynamische (`/sessions/[id]`, `/speakers/[id]`)
-2. **Team-Erfahrung:** Vue-Grundlagen sind vorhanden, Zeit für Einarbeitung ist knapp
-3. **Spätere Anforderungen:** In Schritt 2 soll pro Seitentyp eine Rendering-Strategie
-   gewählt werden, in Schritt 3 kommt PWA/Offline dazu. Das Setup darf diese
-   Entscheidungen nicht verbauen.
-4. **Aufwand für Konfiguration:** Bei 2 Personen und wenigen Wochen Laufzeit soll
-   möglichst wenig Zeit in Tooling fließen.
+2. **Team-Erfahrung:** Vue-Grundlagen vorhanden, Einarbeitungszeit knapp.
+3. **Spätere Anforderungen:** Rendering-Entscheidung in Schritt 2, PWA/Offline in Schritt 3.
+   Das Setup darf diese späteren Entscheidungen nicht unnötig verbauen.
+4. **Aufwand für Konfiguration:** Möglichst wenig Zeit für Tooling bei 2 Personen
 
 ## Alternativen
 
 ### Option A: Nuxt (gewählt)
 
 - **Vorteile:**
-  - Dateibasiertes Routing: Die ~6 Seiten inklusive der dynamischen Detailseiten
-    entstehen einfach durch Dateien in `pages/` (`sessions/[id].vue`), ohne eigene
+  - Dateibasiertes Routing durch Dateien in `pages/` (`sessions/[id].vue`), ohne eigene
     Router-Konfiguration.
-  - Auto-Import von Komponenten und Composables. Das passt zu unserer
-    Schichtstruktur (`components/base/Button.vue` → `<BaseButton>`, siehe
-    Architektur-ADR).
+  - Auto-Import von Komponenten und Composables.
   - Layouts (`layouts/default.vue`) für Header, Navigation und Footer sind eingebaut.
-  - Alle Rendering-Modi sind vorhanden und lassen sich pro Route festlegen. Die
-    Rendering-Entscheidung bleibt dadurch offen.
-  - Offizielle Module für spätere Anforderungen, z. B. für PWA und Dark Mode.
+  - Die Rendering-Entscheidung bleibt offen, konkrete Strategien werden erst in Schritt 2 festgelegt.
   - Von der LV empfohlen.
 - **Nachteile:**
   - Mehr „Magie“ (Auto-Imports, Konventionen), die man erst verstehen muss.
-  - Bei Seiten, die nicht nur im Browser laufen, muss man aufpassen, wann
-    `localStorage` verfügbar ist.
-  - Für ca. 40 Detailseiten und eine JSON-Datei eigentlich ein großes Framework.
+  - `localStorage` darf nur im Browser angesprochen werden.
+  - Für ca. 40 Detailseiten und eine JSON-Datei ein großes Framework.
 
 ### Option B: Vue + Vite + vue-router
 
 - **Vorteile:**
   - Schlankes Setup mit wenig Abstraktion. Man sieht genau, was passiert.
-  - Für eine Anwendung mit ~6 Routen und ohne Backend völlig ausreichend.
-  - `localStorage` ist immer verfügbar, weil alles im Browser läuft.
+  - Für ~6 Routen ohne Backend ausreichend.
 - **Nachteile:**
-  - Die Routen müssen von Hand in einer Router-Datei gepflegt werden. Bei 6 Routen
-    ist das machbar, aber Doppelarbeit gegenüber der Ordnerstruktur.
+  - Routen müssen von Hand in einer Router-Datei gepflegt werden.
   - Komponenten und Composables müssen überall manuell importiert werden.
   - Layouts, Seitentitel und Meta-Tags müssen selbst gebaut werden.
-  - Nur clientseitiges Rendering. Für den Vergleich von Rendering-Strategien
-    in Schritt 2 bräuchten wir zusätzliche Plugins (z. B. `vite-ssg`), die wir
-    selbst zusammenstellen und konfigurieren müssten.
-<br> → Für die Seitentypen reicht es heute, aber bei Schritt 2 und 3
-  müssten wir genau das nachbauen, was Nuxt schon mitbringt.
+  - Weitere Rendering-Strategien erfordern zusätzliche Werkzeuge und Konfiguration.
 
 ## Entscheidung
 
@@ -78,16 +64,15 @@ Module für PWA und Dark Mode werden erst in den jeweiligen Schritten ergänzt.
 
 **Positiv**
 
-- Neue Seiten entstehen einfach durch Dateien in `pages/`. Die Navigation entspricht
-  der Ordnerstruktur.
-- Wenig Konfigurationsaufwand. Die Zeit fließt in Funktion und Übersichtlichkeit,
+- Neue Seiten entstehen einfach durch Dateien in `pages/`.
+- Wenig Konfigurationsaufwand schafft Zeit für Funktionen und Übersichtlichkeit,
   passend zu unserer Marke.
-- Schritt 2 (Rendering) und Schritt 3 (PWA) lassen sich ohne Wechsel des Setups umsetzen.
+- Schritt 2 und Schritt 3 lassen sich ohne Wechsel des Setups umsetzen.
 
 **Negativ**
 
 - Einarbeitung in die Nuxt-Konventionen (Auto-Imports, `srcDir`, Ordnernamen).
-- Das Framework ist größer, als es die reine Datenmenge erfordern würde.
+- Framework größer als für die Datenmenge nötig.
 
 **Risiken**
 
