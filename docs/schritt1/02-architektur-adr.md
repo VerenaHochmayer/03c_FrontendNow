@@ -2,155 +2,119 @@
 
 ## Kontext
 
-FrontendNow ist eine Konferenz-Plattform für eine zweitägige Web-Frontend-Konferenz.
-Die Funktionalität ist durch das Szenario vorgegeben:
+Wir (Team ClubMates) bauen mit Vue und Nuxt die Konferenzseite für die
+fiktive zweitägige Konferenz **FrontendNow**. Die Funktionen sind vorgegeben:
 
 - Sessions durchsuchen und filtern (nach Track, Tag, Level, Speaker)
 - Speaker-Profile ansehen
 - Persönlichen Zeitplan zusammenstellen („Mein Programm“)
-- Zeitplan offline verfügbar (PWA)
-- Dark Mode
+- Zeitplan offline verfügbar (das Konferenz-WLAN ist unzuverlässig → PWA)
+- Dark Mode (die Vortragssäle sind abgedunkelt)
 
-Unsere Markenidentität setzt auf **Übersichtlichkeit statt Dekoration** und auf einen
-schnell zusammengestellten, offline verfügbaren Timetable. Die Struktur soll daher
-genauso übersichtlich sein wie die Oberfläche: Jede Komponente hat eine klare Aufgabe.
+Einschränkungen: Es gibt kein Backend. Alle Daten kommen aus der statischen
+`conference-data.json` (20 Sessions, 18 Speaker, 4 Tracks, 4 Räume). „Mein Programm“
+wird nur clientseitig im `localStorage` gespeichert. Detailseiten sollen statisch
+generiert werden (SSG), „Mein Programm“ läuft clientseitig (CSR).
+
+Unsere Marke setzt auf **Übersichtlichkeit statt Dekoration** und auf einen schnell
+zusammengestellten Timetable. Die wichtigste Interaktion, „Zu Mein Programm
+hinzufügen“, kommt an mehreren Stellen in unterschiedlicher Darstellung vor:
+Session-Karte, Session-Detail, Speaker-Profil und im Timetable. Wir brauchen eine Struktur, in der diese Logik nur einmal existiert und
+die für beide Teammitglieder (und später im Peer-Review) gut verständlich ist.
 
 ## Optionen
 
-**Option A: Flache Struktur, Logik in den Komponenten**
-Alle Komponenten liegen in `components/`, Daten werden direkt in Seiten und
-Komponenten gelesen.
+### Option 1: Flache Struktur, Logik direkt in den Komponenten
 
-- ✅ Schnell aufgesetzt
-- ❌ Die „Mein Programm“-Logik und der Zugriff auf `conference-data.json` würden
-  mehrfach kopiert
-- ❌ Bei 4 Filterkriterien, Detailseiten und Dashboard wird es schnell unübersichtlich
+- **Vorteile:** Schnell aufgesetzt, wenig Dateien.
+- **Nachteile:** Die Logik von „Mein Programm“ und der Datenzugriff würden mehrfach
+  kopiert. Zugriffe auf `localStorage`, verstreut über Komponenten, sind
+  fehleranfällig bei SSG.
+- **Warum abgelehnt:** Unser Kernfeature würde sich nicht überall gleich verhalten.
+  Das widerspricht direkt unserem Markenversprechen.
 
-**Option B: Schichten (Base / Layout / Feature) + Composables für die Kernlogik**
-Komponenten werden nach ihrer Aufgabe getrennt, die fachliche Logik liegt in
-Composables. Die Seiten in `pages/` setzen nur noch zusammen.
+### Option 2: Konsequent headless für alle Interaktionen
 
-- ✅ Eine zentrale Stelle für Daten und Personalisierung
-- ✅ Nutzt die Nuxt-Konventionen (Auto-Import, dateibasiertes Routing)
-- ❌ Etwas mehr Struktur am Anfang
+- **Vorteile:** Maximale Austauschbarkeit der Darstellung.
+- **Nachteile:** Viel Abstraktion für Interaktionen, die nur einmal vorkommen.
+- **Warum abgelehnt:** Widerspricht unserem Grundsatz „übersichtlich statt aufwendig“.
+
+### Option 3: Schichten (Base / Layout / Feature) mit Composables für die Kernlogik
+
+- **Vorteile:** Die Logik von „Mein Programm“ und der Datenzugriff existieren nur
+  einmal. Klare Zuständigkeiten pro Schicht. Nutzt die Nuxt-Konventionen
+  (Auto-Import, dateibasiertes Routing). Die Schicht ist am Komponentennamen erkennbar.
+- **Nachteile:** Mehr Dateien und etwas mehr Struktur am Anfang. Die Regeln für die
+  Schichten müssen eingehalten werden.
+- **Warum gewählt:** Unser Kernfeature verhält sich überall gleich, und die Struktur
+  ist so übersichtlich wie unsere Oberfläche. Das passt am besten zu unserem
+  Markenversprechen.
 
 ## Entscheidung
 
-Wir nehmen **Option B** mit der Nuxt-Ordnerstruktur:
+Wir werden Option 3 wählen und die Komponenten in **drei Schichten** aufteilen (Base, Layout, Feature)
+und die fachliche Logik in **Composables** auslagern. Dabei nutzen wir die
+Nuxt-Konventionen (dateibasiertes Routing, Auto-Import).
 
 ```
 src/
-├── assets/
-│   └── styles/            # Design Tokens (primitiv + semantisch), Light/Dark
+├── assets/styles/      # Design Tokens, Light/Dark
 ├── components/
-│   ├── base/              # Generische Bausteine ohne Fachlogik
-│   ├── layout/            # Seitengerüst
-│   └── features/          # Fachliche Komponenten
-│       ├── sessions/
-│       ├── speakers/
-│       └── program/       # „Mein Programm“
-├── composables/           # Logik (headless), wiederverwendbar
-├── layouts/
-│   └── default.vue
-├── pages/                 # Dateibasiertes Routing
-│   ├── index.vue
-│   ├── sessions/
-│   │   ├── index.vue      # Übersicht + Filter
-│   │   └── [id].vue       # Detail (SSG)
-│   ├── speakers/
-│   │   ├── index.vue
-│   │   └── [id].vue       # Profil (SSG)
-│   └── mein-programm.vue  # Dashboard (CSR)
-└── types/
-│   └── conference.ts      # Typen passend zum Datenschema
-├── data/
-│   ├── conference-data.json   # Geteilter, schreibgeschützter Datensatz
-├── public/                    # PWA-Icons, Manifest-Assets
+│   ├── base/           # generisch, ohne Fachlogik (nur Props/Slots)
+│   ├── layout/         # Seitengerüst
+│   └── features/       # sessions/, speakers/, program/
+├── composables/        # Logik ohne Markup
+├── layouts/default.vue
+├── pages/              # setzen nur zusammen
+├── types/conference.ts
+├── data/conference-data.json   # bewusst außerhalb von src/ (Rohdaten, nicht App-Code)
+└── public/                     # PWA-Icons, Manifest-Assets
 ```
 
-**Regeln für die Schichten:**
+**Regeln:** `base/` kennt keine Konferenzdaten. `features/` greift nur über
+Composables auf Daten oder `localStorage` zu. `pages/` enthält kaum eigene Logik.
 
-- `base/` kennt keine Konferenzdaten, sondern nur Props und Slots.
-- `features/` holt Daten nur über Composables, nie direkt aus der JSON oder dem `localStorage`.
-- `pages/` setzt Feature-Komponenten zusammen und enthält kaum eigene Logik.
-- `Layout/` Komponenten für Aufbau der Oberfläche
-
-**Prüfung der Headless-Aufteilung (Logik als Composable, Darstellung austauschbar)**
-
-Bei einer Headless-Aufteilung liegt die Logik einer Interaktion (Zustand, Regeln,
-Speicherung) in einem Composable ohne eigenes Markup. Die Komponenten, die sie
-nutzen, kümmern sich nur um die Darstellung und können frei gestaltet oder
-ausgetauscht werden. Wir haben das für zwei zentrale Interaktionen bewusst geprüft:
-
-### 1. „Zu Mein Programm hinzufügen“
-
-„Mein Programm“ ist mit unser Kernfeature und erscheint an mehreren Stellen mit unterschiedlicher Darstellung. 
-Durch die Headless-Aufteilung verhält es sich überall gleich, was direkt zu unserem Fokus auf Benutzer\*innenfreundlichkeit
-passt. Außerdem gibt es nur eine Stelle, die auf `localStorage` zugreift. Damit bleiben die SSG-Seiten unproblematisch,
-der Plan ist offline verfügbar, und die Logik lässt sich ohne UI testen.
-Ohne Headless wäre die Logik mit in der Darstellungskomponente. Diese Komponente müste dann für mehre Darstellungsversionen
-viele Varianten-Props bekommen und die Logik würde kopiert. 
-
-### 2. Session-Filterung
-
-Bei der Session-Filterung bietet sich eine Trennung von Logik und Darstellung ebenfalls an (also ein Headless
-Verfahren), da die Filterlogik dann als Composable an anderer Stelle (bspw. in "Meinem Programm")
-wiederverwendet werden kann. Ebenfalls kann so die Darstellung ersetzt werden, ohne dass
-die Filterlogik neu geschrieben werden muss.
+**Headless-Prüfung:**
+- **„Zu Mein Programm hinzufügen“ → Headless.** `useMyProgram()` stellt `toggle`,
+  `isInProgram(id)`, die Erkennung von Zeitkonflikten und die Speicherung im
+  `localStorage` bereit. Die Darstellung übernehmen verschiedene Komponenten.
+  Begründung: Es verhält sich überall gleich, es gibt nur einen Zugriff auf
+  `localStorage` (SSG-sicher, offline-fähig), und die Logik ist ohne UI testbar.
+- **Session-Filterung → nur ein einfaches Composable.** `useSessionFilter()` bündelt
+  die Filterlogik und synchronisiert sie mit der URL-Query. Weil es nur eine
+  Darstellung gibt (`SessionsFilterBar`), wäre eine vollständig headless Komponente
+  mit austauschbaren Renderern Overengineering.
 
 ## Konsequenzen
 
--  Die Logik von „Mein Programm“ gibt es nur einmal. Dadurch verhält sich dieses Element überall gleich, was direkt auf unser Ziel der Benutzer\*innenfreundlichkeit eingeht.
--  Die Trennung passt zu den Rendering-Strategien: Seiten, die nur `useConferenceData()` nutzen, können statisch generiert werden (SSG). Alles, was `useMyProgram()` braucht, läuft clientseitig.
-- Der Datenzugriff ist an einer Stelle gebündelt (`useConferenceData()`). Ein späterer Wechsel von der lokalen JSON zu einem Fetch per URL betrifft nur diese Datei. Das hilft auch bei der Offline-Strategie
-- Die klaren Schichten erleichtern das Peer Review.
-- Es muss aufgepasst werden, dass keine Fachlogik in `base/` und kein direkter Zugriff auf `localStorage` in Komponenten eingebaut werden.
-- Man hat mehr Dateien als bei Option A.
+### Positiv
+
+- „Mein Programm“ verhält sich überall gleich und ist an einer Stelle testbar.
+- Die Trennung passt zu den Rendering-Strategien: Inhalte aus
+  `useConferenceData()` können per SSG generiert werden. Alles, was
+  `useMyProgram()` nutzt, wird erst im Browser aktiv. Das gilt für das Dashboard und
+  für den Merken-Button auf den statischen Detailseiten.
+- Die Schicht ist am Komponentennamen erkennbar (`components/base/Button.vue` →
+  `<BaseButton>`), was das Peer-Review erleichtert.
+
+### Negativ
+
+- Mehr Dateien und etwas mehr Einarbeitung als bei einer flachen Struktur.
+- Die Regeln für die Schichten müssen im Team konsequent eingehalten werden.
+
+### Risiken
+
+- Fachlogik schleicht sich in `base/`-Komponenten ein. → gegenseitige
+  Code-Reviews mit Blick auf die Regeln.
+- Ein zu großes `useMyProgram()` wird unübersichtlich. → Die
+  Konflikterkennung bei Bedarf in eine eigene Hilfsfunktion auslagern.
 
 ## Komponentenübersicht
 
-**Base/UI** (generisch, ohne Fachlogik)
-- `BaseButton`
-- `BaseIconButton`
-- `BaseTag`
-- `BaseCard`
-- `BaseSelect`
-- `BaseSearchInput`
 
-**Layout**
-- `LayoutHeader` 
-- `LayoutNavigation`
-- `LayoutThemeToggle` (Dark Mode)
-- `LayoutOfflineBadge`
-- `LayoutFooter`
-
-**Feature**
-- *sessions*: `SessionsList`, `SessionsCard`, `SessionsFilterBar`
-- *speakers*: `SpeakersList`, `SpeakersCard`, `SpeakersProfile`
-- *program*: `ProgramTimetable`, `ProgramConflictHint`,
-
-**Composables**
-- `useConferenceData()`: lädt `conference-data.json`
-- `useMyProgram()`: verwaltet „Mein Programm“, speichert in `localStorage`, erkennt Zeitkonflikte
-- `useSessionFilter()`: Filter nach Track, Tag, Level und Speaker plus Suche, synchronisiert mit der URL-Query
-- `useTheme()`: Light/Dark, gespeichert in `localStorage`, berücksichtigt `prefers-color-scheme`
-
-**Pages**
-- `index`, `sessions/index`, `sessions/[id]`, `speakers/index`, `speakers/[id]`, `mein-programm`
-
-```
-conference-data.json
-        │
-useConferenceData() ─────────────┬──────────────────────┐
-        │                        │                      │
-sessions/index.vue        sessions/[id].vue      speakers/[id].vue
-  ├─ SessionsFilterBar ─ useSessionFilter()             │
-  └─ SessionsList                │                      │
-       └─ SessionsCard     SessionsDetail        SpeakersProfile
-            └─ ProgramToggleButton ──┴───────────────────┘
-                     │
-               useMyProgram() ⇄ localStorage
-                     │
-          mein-programm.vue (CSR)
-            └─ ProgramTimetable ─ ProgramConflictHint
-```
+| Schicht     | Komponenten                                                                                                                                                                                                     |
+|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Base        | `BaseButton`, `BaseIconButton`, `BaseTag`, `BaseCard`, `BaseSelect`, `BaseSearchInput`                                                                                                                          |
+| Layout      | `LayoutHeader`, `LayoutNavigation`, `LayoutThemeToggle`, `LayoutOfflineBadge`, `LayoutFooter`                                                                                                                   |
+| Feature     | `SessionsList`, `SessionsCard`, `SessionsFilterBar`, `SessionsDetail`, `SpeakersList`, `SpeakersCard`, `SpeakersProfile`, `ProgramToggleButton`, `ProgramTimetable`, `ProgramConflictHint`, `ProgramEmptyState` |
+| Composables | `useConferenceData()`, `useMyProgram()`, `useSessionFilter()`, `useTheme()`                                                                                                                                     |
