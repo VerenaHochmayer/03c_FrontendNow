@@ -9,7 +9,7 @@ fiktive zweitägige Konferenz **FrontendNow**. Die Funktionen sind vorgegeben:
 - Speaker-Profile ansehen
 - Persönlichen Zeitplan zusammenstellen („Mein Programm“)
 - Zeitplan offline verfügbar (das Konferenz-WLAN ist unzuverlässig → PWA)
-- Dark Mode (die Vortragssäle sind abgedunkelt)
+- Dark Mode
 
 Einschränkungen: Es gibt kein Backend. Alle Daten kommen aus der statischen
 `conference-data.json` (20 Sessions, 18 Speaker, 4 Tracks, 4 Räume). „Mein Programm“
