@@ -62,6 +62,13 @@ des Speakers und `MyProgramTimetable` den neuen Zustand.
 Abgeleitete Werte (`sessions`, `conflicts`, `isInProgram(id)`) sind
 `computed` und werden nur bei Änderungen neu berechnet.
 
+**Filter:** Programmübersicht und „Mein Programm“ lassen sich nach denselben
+Kriterien filtern (Raum, Tag, Track, Level, Uhrzeit, Speaker). Dafür bekommt
+`useSessionFilter(sessions)` die jeweilige Liste übergeben: alle Sessions aus
+`useConferenceData()` oder die gemerkten aus `useMyProgram()`. Der Filterzustand
+ist bewusst **getrennt** von „Mein Programm“. Er steht in der URL-Query statt im
+`localStorage`, sodass Filtern nie die gemerkten IDs verändert.
+
 ## Datenfluss-/Sequenzdiagramm
 
 ```mermaid

@@ -3,9 +3,10 @@
 ## Kontext
 
 Trotz der kleinen Datenmenge braucht die Anwendung **mehrere Seitentypen**:
-Übersichten (Sessions mit Filtern, Speaker), Detailseiten pro Session (20) und
-Speaker (18) mit eigenen URLs, den personalisierten Timetable „Mein Programm“ und
-eine Startseite.
+die Programmübersicht als Timetable, eine Speaker-Liste, Infokarten pro Event (20)
+und Speaker (18) mit eigenen URLs, den personalisierten Timetable „Mein Programm“
+und eine Startseite. Programmübersicht und „Mein Programm“ sind nach Raum, Tag,
+Track, Level, Uhrzeit und Speaker filterbar.
 
 Kriterien für die Wahl des Setups:
 
