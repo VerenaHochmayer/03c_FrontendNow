@@ -1,5 +1,9 @@
 # FrontendNow – Team ClubMates
 
+Verena Hochmayer • Luca Steuernagel
+<br>Repository: https://github.com/VerenaHochmayer/03c_FrontendNow
+
+
 Konferenzseite für die fiktive zweitägige Web-Frontend-Konferenz **FrontendNow**.
 Im Mittelpunkt stehen Übersichtlichkeit und ein persönlicher Timetable („Mein
 Programm“), der auch offline verfügbar ist.
