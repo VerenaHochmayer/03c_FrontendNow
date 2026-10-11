@@ -1,5 +1,6 @@
 docs/Struktur
 docs/adr
+.claude
 
 # Nuxt dev/build outputs
 .output
@@ -25,3 +26,6 @@ logs
 .env
 .env.*
 !.env.example
+
+# Lokale Claude-Code-Konfiguration
+.claude/launch.json

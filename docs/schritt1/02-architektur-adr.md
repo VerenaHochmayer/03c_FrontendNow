@@ -73,18 +73,19 @@ src/
 ├── composables/        # Logik ohne Markup
 ├── layouts/default.vue
 ├── pages/              # setzen nur zusammen
+├── public/             # Favicon, später PWA-Icons und Manifest-Assets
 └── types/conference.ts
 tokens/tokens.css           # Design Tokens (primitiv + semantisch)
 data/conference-data.json   # bewusst außerhalb von src/ (Rohdaten, nicht App-Code)
-public/                     # PWA-Icons, Manifest-Assets
 ```
 
 **Regeln:** `base/` kennt keine Konferenzdaten. `features/` greift nur über
 Composables auf Daten oder `localStorage` zu. `pages/` enthält kaum eigene Logik.
 
 **Benennung:** Nuxt setzt beim Auto-Import standardmäßig alle Ordnernamen vor den
-Komponentennamen. In der `nuxt.config.ts` stellen wir ein, dass `features/` dabei
-übersprungen wird (`pathPrefix: false`). Aus `features/my-program/Toggle.vue` wird so
+Komponentennamen. In der `nuxt.config.ts` registrieren wir `components/features/`
+deshalb als eigenes Komponentenverzeichnis vor `components/`, sodass der Name erst
+ab dem Feature-Ordner gebildet wird. Aus `features/my-program/Toggle.vue` wird so
 `<MyProgramToggle>` statt `<FeaturesMyProgramToggle>`. Die Präfixe sind eindeutig:
 `Sessions…` steht für die Programmübersicht, `MyProgram…` für das persönliche
 Programm.

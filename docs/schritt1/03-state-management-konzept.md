@@ -8,7 +8,7 @@ für diesen kleinen, klar umrissenen Zustand nicht nötig (siehe Technologie-ADR
 
 ## Wie wird der geteilte Datensatz geladen/modelliert? 
 
-`useConferenceData()` importiert `data/conference-data.json` statisch. Die Daten
+`useConferenceData()` importiert `../../src/data` statisch. Die Daten
 werden dadurch beim Build mitgeliefert. Es gibt keinen Netzwerkaufruf zur
 Laufzeit, und der Datensatz ist automatisch offline verfügbar, sobald die App
 gecacht ist.

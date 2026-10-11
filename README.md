@@ -1,75 +1,71 @@
-# Nuxt Minimal Starter
+# FrontendNow – Team ClubMates
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Konferenzseite für die fiktive zweitägige Web-Frontend-Konferenz **FrontendNow**.
+Im Mittelpunkt stehen Übersichtlichkeit und ein persönlicher Timetable („Mein
+Programm“), der auch offline verfügbar ist.
+
+Umgesetzt mit Nuxt 4, TypeScript und Tailwind CSS v4. Die Daten kommen aus der
+statischen Datei `data/conference-data.json`, ein Backend gibt es nicht.
+
+## Voraussetzungen
+
+- [Node.js](https://nodejs.org/) 22.22 / 24.15 oder neuer (von Nuxt 4.6 vorausgesetzt)
+- npm (wird mit Node.js installiert)
 
 ## Setup
 
-Make sure to install dependencies:
+Abhängigkeiten installieren:
 
 ```bash
-# npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
+Dabei führt `postinstall` automatisch `nuxt prepare` aus und erzeugt die Typen in `.nuxt/`.
 
-Start the development server on `http://localhost:3000`:
+## Starten
+
+Entwicklungsserver auf [http://localhost:3000](http://localhost:3000):
 
 ```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+## Weitere Befehle
 
-Build the application for production:
+| Befehl | Zweck |
+|---|---|
+| `npm run generate` | Statische Seite erzeugen (Ausgabe in `.output/public`) |
+| `npm run build` | Produktions-Build erstellen |
+| `npm run preview` | Produktions-Build lokal ansehen |
+| `npm run lint` | Code mit ESLint prüfen |
+| `npm run lint:fix` | ESLint-Probleme automatisch beheben, soweit möglich |
 
-```bash
-# npm
-npm run build
+## Projektstruktur
 
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+```
+src/                        # Quellcode 
+├── assets/styles/main.css  # Tailwind + Einbindung der Design Tokens
+├── components/
+│   ├── base/               # generische Bausteine (BaseTag …)
+│   ├── layout/             # Seitengerüst (LayoutHeader, LayoutNavigation …)
+│   └── features/           # sessions/, speakers/, my-program/
+├── composables/            # Logik, z. B. useConferenceData()
+├── layouts/                # default.vue
+├── pages/                  # Routen
+├── public/                 # statische Dateien
+└── types/                  # TypeScript-Typen zum Datenschema
+tokens/tokens.css           # Design Tokens (primitiv + semantisch)
+data/conference-data.json   # Konferenzdaten (schreibgeschützt)
+docs/schritt1/              # Branding, ADRs, State-Management-Konzept
 ```
 
-Locally preview production build:
+Komponenten werden von Nuxt automatisch importiert. Der Name ergibt sich aus dem
+Ordner, z. B. `components/base/Tag.vue` → `<BaseTag>` und
+`components/features/sessions/Card.vue` → `<SessionsCard>`.
 
-```bash
-# npm
-npm run preview
+## Dokumentation
 
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- [A. Branding & Design Tokens](docs/schritt1/01-branding-design-tokens.md)
+- [B. Architektur-ADR: Komponenten- & Ordnerstruktur](docs/schritt1/02-architektur-adr.md)
+- [C. State-Management-Konzept](docs/schritt1/03-state-management-konzept.md)
+- [D. Technologie-ADR: Projekt-Setup](docs/schritt1/04-technologie-adr.md)

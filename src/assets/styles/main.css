@@ -1,0 +1,21 @@
+@import "tailwindcss";
+@import "../../../tokens/tokens.css";
+
+/* Basis-Styles: nur semantische Tokens verwenden */
+@layer base {
+  body {
+    @apply bg-surface text-primary font-body text-base antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-heading font-semibold;
+  }
+
+  a {
+    @apply text-link underline-offset-4 hover:underline;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-focus;
+  }
+}
