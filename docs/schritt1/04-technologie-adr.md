@@ -39,7 +39,7 @@ Wir verwenden **Nuxt** (Option A) mit folgendem Tooling:
 | Bereich       | Wahl                                   | Begründung                                                         |
 |---------------|----------------------------------------|--------------------------------------------------------------------|
 | Framework     | Nuxt 4 (Vue 3)                         | Routing, Layouts und Auto-Import passen zu unseren Seitentypen     |
-| Quellordner   | `src/` statt `app/` (`srcDir: 'src/'`) | Vorgabe der Aufgabe                                                |
+| Quellordner   | `src/` statt `../../src/app` (`srcDir: 'src/'`) | Vorgabe der Aufgabe                                                |
 | Sprache       | TypeScript                             | Typen zum Datenschema fangen Tippfehler (z. B. `trackId`) ab       |
 | Code-Qualität | `@nuxt/eslint`                         | Einheitlicher Stil ohne eigene Konfiguration                       |
 | Styling       | Tailwind CSS v4                        | Semantische Design Tokens werden per `@theme` zu Klassen           |

@@ -1,18 +1,75 @@
-# 03c\_FrontendNow
+# Nuxt Minimal Starter
 
-## Projekt öffnen
+Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-1. Repository mit "git clone <Repository-URL>" herunterladen
-2. Projektordner öffnen mit Webstorm/Visual Studio Code
-3. Die Dokumentation von Schritt 1 liegt unter docs/schritt1/
+## Setup
 
-## Neueste Änderungen herunterladen
-Im Terminal des Projektordners:
-1. git status (optional)
-2. git pull
+Make sure to install dependencies:
 
-## Eigene Änderungen hochladen
-Dateien speichern und im Terminal ausführen:
-1. git add .
-2. git commit -m "Beschreibung der Änderungen"
-3. git push
+```bash
+# npm
+npm install
+
+# pnpm
+pnpm install
+
+# yarn
+yarn install
+
+# bun
+bun install
+```
+
+## Development Server
+
+Start the development server on `http://localhost:3000`:
+
+```bash
+# npm
+npm run dev
+
+# pnpm
+pnpm dev
+
+# yarn
+yarn dev
+
+# bun
+bun run dev
+```
+
+## Production
+
+Build the application for production:
+
+```bash
+# npm
+npm run build
+
+# pnpm
+pnpm build
+
+# yarn
+yarn build
+
+# bun
+bun run build
+```
+
+Locally preview production build:
+
+```bash
+# npm
+npm run preview
+
+# pnpm
+pnpm preview
+
+# yarn
+yarn preview
+
+# bun
+bun run preview
+```
+
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
