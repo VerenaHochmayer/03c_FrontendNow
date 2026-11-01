@@ -35,3 +35,27 @@ E („Mein Programm“-Grundfunktion)
 - **Tool:** Claude
 - **Prompt:** „Folgt die Detailseite so der SSG Strategie?“
 - **Zweck:** Prüfen, ob die Session-Detailseite entsprechend der festgelegten SSG-Strategie umgesetzt wurde (C).
+
+### 6
+- **Datum:** 01.11.2026
+- **Tool:** Claude
+- **Prompt:** „Wie ist der localStorage in unserem Projekt aufgebaut?“
+- **Zweck:** Das Speicherkonzept für die Session-IDs im persönlichen Programm nachvollziehen (E).
+
+### 7
+- **Datum:** 01.11.2026
+- **Tool:** Claude
+- **Prompt:** „Ich habe schon einen Commit erstellt. Warum verlangt Git jetzt noch einen Merge-Commit, und wie geht es ohne?“
+- **Zweck:** Die Git-Meldung verstehen und die eigenen Änderungen ohne zusätzlichen Merge-Commit mit dem gemeinsamen Stand zusammenführen.
+
+### 8
+- **Datum:** 01.11.2026
+- **Tool:** Claude
+- **Prompt:** „Wie funktioniert das Hinzufügen und Entfernen einer Session in Mein Programm?“
+- **Zweck:** Die Funktionen von useMyProgram() und den gemeinsamen Zustand der Merken-Buttons verstehen (E).
+
+### 9
+- **Datum:** 01.11.2026
+- **Tool:** Claude
+- **Prompt:** „Wie werden meine gespeicherten Sessions nach dem Neuladen wieder angezeigt?“
+- **Zweck:** Das Einlesen der Session-IDs aus dem localStorage und die Wiederherstellung des persönlichen Programms verstehen (E).
