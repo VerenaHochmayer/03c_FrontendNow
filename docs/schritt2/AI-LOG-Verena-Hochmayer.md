@@ -59,3 +59,9 @@ E („Mein Programm“-Grundfunktion)
 - **Tool:** Claude
 - **Prompt:** „Wie werden meine gespeicherten Sessions nach dem Neuladen wieder angezeigt?“
 - **Zweck:** Das Einlesen der Session-IDs aus dem localStorage und die Wiederherstellung des persönlichen Programms verstehen (E).
+
+### 10
+- **Datum:** 01.11.2026
+- **Tool:** Claude
+- **Prompt:** „Wie verschiebe ich das AI-Log nach docs/schritt1 und halte die neue Ordnerstruktur in einem eigenen Commit fest?“
+- **Zweck:** Das AI-Log dem richtigen Projektschritt zuordnen und die Verschiebung in einem separaten Commit dokumentieren.
