@@ -15,6 +15,15 @@ export default defineNuxtConfig({
     shared: 'src/shared',
   },
 
+  // Rendering-Strategie pro Route (siehe docs/schritt2/01-rendering-strategie-adr.md)
+  routeRules: {
+    '/': { prerender: true },
+    '/sessions': { prerender: true }, // SSG, Filter wirken im Browser
+    '/sessions/**': { prerender: true }, // SSG, ISR als Ausbaupfad
+    '/speakers/**': { prerender: true }, // SSG
+    '/mein-programm': { ssr: false }, // CSR, Daten nur im localStorage
+  },
+
   // Design Tokens + Tailwind (siehe tokens/tokens.css)
   css: ['~/assets/styles/main.css'],
 

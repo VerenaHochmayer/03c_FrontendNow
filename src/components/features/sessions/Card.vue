@@ -10,7 +10,7 @@ const speakerNames = computed(() =>
 </script>
 
 <template>
-  <article class="rounded border border-border bg-surface-raised p-4">
+  <BaseCard as="article">
     <p class="font-heading text-sm text-muted">
       {{ session.startTime }}–{{ session.endTime }} · {{ getRoom(session.roomId)?.name }}
     </p>
@@ -25,5 +25,5 @@ const speakerNames = computed(() =>
       <BaseTag>{{ session.level }}</BaseTag>
       <BaseTag>{{ session.format }}</BaseTag>
     </div>
-  </article>
+  </BaseCard>
 </template>

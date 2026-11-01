@@ -18,10 +18,10 @@ const stats = computed(() => [
     <p class="mt-2 text-lg">{{ conference.tagline }}</p>
 
     <dl class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
-      <div v-for="stat in stats" :key="stat.label" class="rounded border border-border bg-surface-raised p-4">
+      <BaseCard v-for="stat in stats" :key="stat.label">
         <dt class="text-sm text-muted">{{ stat.label }}</dt>
         <dd class="font-heading text-2xl">{{ stat.value }}</dd>
-      </div>
+      </BaseCard>
     </dl>
 
     <NuxtLink
