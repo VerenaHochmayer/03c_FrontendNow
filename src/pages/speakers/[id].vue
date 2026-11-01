@@ -1,26 +1,21 @@
 <script setup lang="ts">
-// Platzhalter für die Infokarte eines Speakers (SpeakersProfile)
+// Rendering: SSG, alle 18 Profile werden beim Build erzeugt
+// (siehe docs/schritt2/01-rendering-strategie-adr.md)
 const route = useRoute()
-const { getSpeaker, getSessionsBySpeaker } = useConferenceData()
+const { getSpeaker } = useConferenceData()
 
 const speaker = getSpeaker(String(route.params.id))
 if (!speaker) {
-  throw createError({ statusCode: 404, statusMessage: 'Speaker nicht gefunden' })
+  throw createError({ statusCode: 404, statusMessage: 'Speaker nicht gefunden', fatal: true })
 }
-const talks = getSessionsBySpeaker(speaker.id)
+
+// Eigener Titel und Beschreibung pro Profil, damit es in Suchmaschinen auffindbar ist
+useSeoMeta({
+  title: `${speaker.name} – FrontendNow`,
+  description: speaker.bio,
+})
 </script>
 
 <template>
-  <article v-if="speaker">
-    <h1 class="text-2xl">{{ speaker.name }}</h1>
-    <p class="mt-1 text-muted">{{ speaker.title }} · {{ speaker.company }}</p>
-    <p class="mt-6">{{ speaker.bio }}</p>
-
-    <h2 class="mt-8 text-lg">Vorträge</h2>
-    <ul class="mt-4 grid gap-4">
-      <li v-for="session in talks" :key="session.id">
-        <SessionsCard :session="session" />
-      </li>
-    </ul>
-  </article>
+  <SpeakersProfile :speaker="speaker" />
 </template>
