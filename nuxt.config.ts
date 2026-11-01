@@ -23,6 +23,8 @@ export default defineNuxtConfig({
     '/speakers/**': { prerender: true }, // SSG
     '/mein-programm': { ssr: false }, // CSR, Daten nur im localStorage
   },
+  // Ladehinweis für CSR-Seiten statt eines leeren Zustands (siehe Rendering-ADR)
+  spaLoadingTemplate: 'spa-loading-template.html',
 
   // Design Tokens + Tailwind (siehe tokens/tokens.css)
   css: ['~/assets/styles/main.css'],

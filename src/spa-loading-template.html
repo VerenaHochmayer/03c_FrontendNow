@@ -1,0 +1,10 @@
+<!--
+  Neutraler Ladehinweis für Seiten, die nur im Browser gerendert werden (CSR),
+  also „Mein Programm“. Er erscheint statt eines leeren Zustands, bis das
+  persönliche Programm aus dem localStorage geladen ist (siehe Rendering-ADR).
+  Die Stile stehen inline, weil das CSS zu diesem Zeitpunkt noch nicht geladen ist.
+  Farben und Schrift entsprechen den Design Tokens (surface, muted, font-heading).
+-->
+<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #f5f0f6; color: #6b6470; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.875rem;">
+  Dein Programm wird geladen …
+</div>

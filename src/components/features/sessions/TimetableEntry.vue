@@ -12,10 +12,14 @@ const speakerNames = computed(() =>
 <template>
   <!-- Die ganze Karte ist klickbar (Link über after:inset-0), der Linktext bleibt aber nur der Titel -->
   <BaseCard as="article" padding="sm" class="relative h-full hover:border-border-strong">
-    <p class="font-heading text-xs text-muted">
-      {{ session.startTime }}–{{ session.endTime }}
-      <span class="md:hidden">· {{ getRoom(session.roomId)?.name }}</span>
-    </p>
+    <div class="flex items-start justify-between gap-2">
+      <p class="font-heading text-xs text-muted">
+        {{ session.startTime }}–{{ session.endTime }}
+        <span class="md:hidden">· {{ getRoom(session.roomId)?.name }}</span>
+      </p>
+      <!-- relative z-10: liegt über dem klickbaren Karten-Link -->
+      <MyProgramToggle :session-id="session.id" size="compact" class="relative z-10" />
+    </div>
     <h3 class="mt-1 text-sm">
       <NuxtLink
         :to="`/sessions/${session.id}`"

@@ -22,6 +22,7 @@ const facts = computed(() => [
     <NuxtLink to="/sessions" class="font-heading text-sm">← Zum Programm</NuxtLink>
 
     <h1 class="mt-4 text-2xl">{{ session.title }}</h1>
+    <MyProgramToggle :session-id="session.id" class="mt-4" />
 
     <BaseCard class="mt-6">
       <dl class="grid grid-cols-2 gap-4 sm:grid-cols-3">

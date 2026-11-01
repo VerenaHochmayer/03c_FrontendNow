@@ -25,5 +25,6 @@ const speakerNames = computed(() =>
       <BaseTag>{{ session.level }}</BaseTag>
       <BaseTag>{{ session.format }}</BaseTag>
     </div>
+    <MyProgramToggle :session-id="session.id" class="mt-3" />
   </BaseCard>
 </template>
