@@ -2,10 +2,10 @@
 import type { Session } from '~/types/conference'
 
 const props = defineProps<{ session: Session }>()
-const { getRoom, getTrack, getSpeaker } = useConferenceData()
+const { getRoom, getTrack, getSessionSpeakers } = useConferenceData()
 
 const speakerNames = computed(() =>
-  props.session.speakerIds.map(id => getSpeaker(id)?.name).filter(Boolean).join(', '),
+  getSessionSpeakers(props.session).map(speaker => speaker.name).join(', '),
 )
 </script>
 

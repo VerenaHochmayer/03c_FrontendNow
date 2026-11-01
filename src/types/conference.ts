@@ -1,54 +1,56 @@
 // Typen passend zum Schema von data/conference-data.json
+// Alle Felder sind readonly: Der Datensatz ist schreibgeschützt (siehe State-Management-Konzept).
 
-export type Level = 'Einsteiger' | 'Fortgeschritten' | 'Experte'
+export const LEVELS = ['Einsteiger', 'Fortgeschritten', 'Experte'] as const
+export type Level = typeof LEVELS[number]
 export type Format = 'Vortrag' | 'Workshop' | 'Podium'
 
 export interface Conference {
-  name: string
-  tagline: string
-  dates: string[]
-  location: string
-  timezone: string
+  readonly name: string
+  readonly tagline: string
+  readonly dates: readonly string[]
+  readonly location: string
+  readonly timezone: string
 }
 
 export interface Track {
-  id: string
-  name: string
+  readonly id: string
+  readonly name: string
 }
 
 export interface Room {
-  id: string
-  name: string
-  capacity: number
+  readonly id: string
+  readonly name: string
+  readonly capacity: number
 }
 
 export interface Speaker {
-  id: string
-  name: string
-  title: string
-  company: string
-  bio: string
-  sessionIds: string[]
+  readonly id: string
+  readonly name: string
+  readonly title: string
+  readonly company: string
+  readonly bio: string
+  readonly sessionIds: readonly string[]
 }
 
 export interface Session {
-  id: string
-  title: string
-  abstract: string
-  trackId: string
-  speakerIds: string[]
-  day: string
-  startTime: string
-  endTime: string
-  roomId: string
-  level: Level
-  format: Format
+  readonly id: string
+  readonly title: string
+  readonly abstract: string
+  readonly trackId: string
+  readonly speakerIds: readonly string[]
+  readonly day: string
+  readonly startTime: string
+  readonly endTime: string
+  readonly roomId: string
+  readonly level: Level
+  readonly format: Format
 }
 
 export interface ConferenceData {
-  conference: Conference
-  tracks: Track[]
-  rooms: Room[]
-  speakers: Speaker[]
-  sessions: Session[]
+  readonly conference: Conference
+  readonly tracks: readonly Track[]
+  readonly rooms: readonly Room[]
+  readonly speakers: readonly Speaker[]
+  readonly sessions: readonly Session[]
 }

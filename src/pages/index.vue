@@ -1,15 +1,14 @@
 <script setup lang="ts">
-const { conference, sessions, speakers, tracks, rooms } = useConferenceData()
+const { conference, sessions, speakers, tracks, rooms, formatDay } = useConferenceData()
 
-const dateFormat = new Intl.DateTimeFormat('de-AT', { day: 'numeric', month: 'long', year: 'numeric' })
-const dates = conference.dates.map(d => dateFormat.format(new Date(d))).join(' & ')
+const dates = computed(() => conference.value.dates.map(day => formatDay(day, 'date')).join(' & '))
 
-const stats = [
-  { label: 'Sessions', value: sessions.length },
-  { label: 'Speaker', value: speakers.length },
-  { label: 'Tracks', value: tracks.length },
-  { label: 'Räume', value: rooms.length },
-]
+const stats = computed(() => [
+  { label: 'Sessions', value: sessions.value.length },
+  { label: 'Speaker', value: speakers.value.length },
+  { label: 'Tracks', value: tracks.value.length },
+  { label: 'Räume', value: rooms.value.length },
+])
 </script>
 
 <template>
