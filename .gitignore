@@ -3,7 +3,8 @@ docs/adr
 .claude
 
 docs/process-documentation
-docs/schritt2/AI-LOG-Luca-Steuernagel.md
+
+docs/.DS_Store
 
 # Nuxt dev/build outputs
 .output
