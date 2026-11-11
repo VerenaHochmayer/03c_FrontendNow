@@ -4,7 +4,32 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxt/eslint'],
+  modules: ['@nuxt/eslint', '@vite-pwa/nuxt'],
+  // PWA Manifest
+  pwa: {
+    /* PWA options */
+    //autoupdate, weil wir automatisch updaten wollen, sobald wieder Internet da ist.
+    registerType: 'autoUpdate',
+    manifest: {
+      "name": 'FrontendNow',
+      "short_name": 'FrontendNow',
+      "description": 'Zwei Tage Web-Frontend, ohne Buzzword-Bingo',
+      "lang": 'de',
+      "start_url": '/mein-programm',
+      "display": 'standalone',
+      "background_color": '#f5f0f6',
+      "theme_color": '#222222',
+      //TODO: "icons": ' '
+      //Test:
+      "icons": [
+        {src: '/test_512.png', sizes: '512x512', type: 'image/png'},
+        {src: '/test_128.png', sizes: '128x128', type: 'image/png'}
+      ]
+    },
+    devOptions: {
+      enabled: true
+    }
+  },
 
   // Quellordner src/ statt app/ (Vorgabe, siehe Technologie-ADR)
   srcDir: 'src/',
