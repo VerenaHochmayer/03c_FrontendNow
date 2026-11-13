@@ -19,11 +19,9 @@ export default defineNuxtConfig({
       "display": 'standalone',
       "background_color": '#f5f0f6',
       "theme_color": '#222222',
-      //TODO: "icons": ' '
-      //Test:
       "icons": [
-        {src: '/test_512.png', sizes: '512x512', type: 'image/png'},
-        {src: '/test_128.png', sizes: '128x128', type: 'image/png'}
+        {src: '/Logo_512x512.png', sizes: '512x512', type: 'image/png'},
+        {src: '/Logo_192x192.png', sizes: '192x192', type: 'image/png'}
       ]
     },
     devOptions: {
