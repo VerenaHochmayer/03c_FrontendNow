@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   modules: ['@nuxt/eslint', '@vite-pwa/nuxt'],
-  // PWA: Manifest + Service Worker (Caching-Konzept: docs/schritt3/01-caching-strategie.md)
+  // PWA: Manifest + Service Worker (Caching-Konzept: docs/schritt3/02-offline-strategie-konzept.md)
   pwa: {
     // autoUpdate, weil wir automatisch updaten wollen, sobald wieder Internet da ist.
     // Konzept B, Abschnitt 2: So werden gecachte Seiten nach einem neuen Build ersetzt
