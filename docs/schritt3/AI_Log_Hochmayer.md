@@ -34,3 +34,15 @@ E (Verifikations-Nachweis, Lighthouse-Audit)
 - **Tool:** Claude
 - **Prompt:** „Warum taucht beim Lighthouse-Audit kurz ein eigenes Chrome-Fenster auf und verschwindet wieder? Kann man das fixen?“
 - **Zweck:** Verstehen, wie Lighthouse über die Kommandozeile testet (E). Lighthouse startet für jeden Audit einen eigenen, sauberen Chrome ohne Cache und ohne Service Worker, lädt darin die Seite, misst und schließt das Fenster wieder. Das ist kein Fehler und muss nicht behoben werden. Der Vorteil: Das Ergebnis hängt nicht von den eigenen Cache-Daten ab, und der Service Worker im normalen Chrome bleibt für die Offline-Tests erhalten. Der Bericht wird als HTML-Datei gespeichert und kann danach beliebig lange geöffnet werden.
+
+### 6
+- **Datum:** 14.11.2026
+- **Tool:** Claude
+- **Prompt:** „Warum sollen beide im Team die Offline-Szenarien auf dem eigenen Rechner testen? Welche Unterschiede können das Ergebnis verändern?“
+- **Zweck:** Verstehen, warum ein einzelner Testdurchlauf nicht reicht (D). Das Ergebnis hängt von der Umgebung ab: Browser und Version, Betriebssystem, bereits vorhandene Cache-Daten und Service Worker, die Netzwerkgeschwindigkeit beim ersten Laden und Einstellungen in den DevTools wie „Bypass for network“. Ein Fehler, der nur auf einem Rechner auftritt, zeigt eine Abhängigkeit von genau diesen Bedingungen. Zwei unabhängige Durchläufe machen solche Unterschiede sichtbar und das Protokoll dadurch glaubwürdiger.
+
+### 7
+- **Datum:** 14.11.2026
+- **Tool:** Claude
+- **Prompt:** „Kann man den Lighthouse-Bericht als HTML-Datei auch auf anderen Rechnern öffnen?“
+- **Zweck:** Klären, ob der Bericht als Beleg für die Abgabe taugt (E). Ja: Lighthouse speichert alles in einer einzigen Datei, Ergebnisse, Darstellung und Skripte stecken direkt im HTML. Nach dem Herunterladen öffnet jeder Browser die Datei, auch ohne Internet und ohne laufenden Server. Auf GitHub wird sie allerdings nur als Quelltext angezeigt, nicht als fertige Seite. Deshalb ist ein zusätzliches Bild hilfreich.
