@@ -28,3 +28,9 @@ E (Verifikations-Nachweis, Lighthouse-Audit)
 - **Tool:** Claude
 - **Prompt:** „Kannst du mir den Lighthouse-PWA-Bericht erklären? Was bedeuten die einzelnen Prüfungen und die roten Markierungen?“
 - **Zweck:** Das Ergebnis des Lighthouse-Audits einordnen (E). Die App ist installierbar: Manifest und Service Worker erfüllen alle Bedingungen. Zwei Punkte sind nur Feinschliff und betreffen nicht das Offline-Caching: Es fehlt ein `<meta name="theme-color">` im HTML (die Farbe steht bisher nur im Manifest), und es gibt kein „maskable“ Icon, das Android sauber zuschneiden kann. Außerdem gelernt: Die PWA-Kategorie gibt es nur noch in Lighthouse 11, deshalb wurde der Audit über `npx lighthouse@11` ausgeführt.
+
+### 5
+- **Datum:** 14.11.2026
+- **Tool:** Claude
+- **Prompt:** „Warum taucht beim Lighthouse-Audit kurz ein eigenes Chrome-Fenster auf und verschwindet wieder? Kann man das fixen?“
+- **Zweck:** Verstehen, wie Lighthouse über die Kommandozeile testet (E). Lighthouse startet für jeden Audit einen eigenen, sauberen Chrome ohne Cache und ohne Service Worker, lädt darin die Seite, misst und schließt das Fenster wieder. Das ist kein Fehler und muss nicht behoben werden. Der Vorteil: Das Ergebnis hängt nicht von den eigenen Cache-Daten ab, und der Service Worker im normalen Chrome bleibt für die Offline-Tests erhalten. Der Bericht wird als HTML-Datei gespeichert und kann danach beliebig lange geöffnet werden.
