@@ -35,6 +35,10 @@ export default defineNuxtConfig({
       // Service Workers werden App-Shell (JS, CSS inkl. Tokens), Icons und alle
       // vorgerenderten Seiten (Programm, Infokarten, Speaker) vorab gespeichert.
       // Die _payload.json-Dateien (Seitendaten) ergänzt das Modul automatisch.
+      //
+      // Sessions-/Speaker-Daten (Konzept B, Abschnitt 2) → Cache-First über den Precache:
+      // Rohdaten im JS-Bundle (statischer Import), vorgerenderte Seiten und _payload.json.
+      // Eine eigene runtimeCaching-Regel würde nie greifen, der Precache antwortet vorher.
       globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'],
 
       // Konzept B, Abschnitt 3: Jede Seite muss offline starten, auch die start_url
@@ -49,10 +53,13 @@ export default defineNuxtConfig({
       // Links offline die vorgerenderte Seite bekommen statt der leeren App-Hülle.
       // Die ersten beiden Einträge sind die Standardwerte von Workbox, die dritte Zeile
       // enthält die FILTER_KEYS aus useSessionFilter.ts.
+      // Konzept B, Abschnitt 2: Die vierte Zeile (_b) ist nötig, weil Nuxt Seitendaten als
+      // „_payload.json?_b=<Build-ID>“ lädt, im Precache liegen sie ohne Parameter.
       ignoreURLParametersMatching: [
         /^utm_/,
         /^fbclid$/,
         /^(day|time|room|track|level|speaker)$/,
+        /^_b$/,
       ],
 
       // Caches alter Versionen nach einem Update löschen
