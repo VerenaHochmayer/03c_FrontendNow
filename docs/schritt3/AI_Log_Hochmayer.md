@@ -22,3 +22,9 @@ E (Verifikations-Nachweis, Lighthouse-Audit)
 - **Tool:** Claude
 - **Prompt:** „Warum zeigt die Console offline rote Fehler bei der Google-Schrift, obwohl die Seite selbst funktioniert?“
 - **Zweck:** Die Fehlermeldungen beim Offline-Test einordnen (E). Die Schrift liegt auf den Servern von Google und wird nicht vorab, sondern erst zur Laufzeit gecacht. Gespeichert wird nur, was online schon einmal geladen wurde: Beim allerersten Besuch lädt die Seite die Schrift, bevor der Service Worker aktiv ist, und Google teilt die Schrift in Teildateien auf, von denen nur die benötigten geladen werden. Fehlt eine davon offline, nutzt der Browser eine Systemschrift, die Inhalte bleiben vollständig lesbar. Ergebnis: eine dokumentierte Lücke für den Nachweis. Die Lösung wäre, die Schriften selbst zu hosten, damit sie im Precache landen (Hinweis an Person 1).
+
+### 4
+- **Datum:** 14.11.2026
+- **Tool:** Claude
+- **Prompt:** „Kannst du mir den Lighthouse-PWA-Bericht erklären? Was bedeuten die einzelnen Prüfungen und die roten Markierungen?“
+- **Zweck:** Das Ergebnis des Lighthouse-Audits einordnen (E). Die App ist installierbar: Manifest und Service Worker erfüllen alle Bedingungen. Zwei Punkte sind nur Feinschliff und betreffen nicht das Offline-Caching: Es fehlt ein `<meta name="theme-color">` im HTML (die Farbe steht bisher nur im Manifest), und es gibt kein „maskable“ Icon, das Android sauber zuschneiden kann. Außerdem gelernt: Die PWA-Kategorie gibt es nur noch in Lighthouse 11, deshalb wurde der Audit über `npx lighthouse@11` ausgeführt.
