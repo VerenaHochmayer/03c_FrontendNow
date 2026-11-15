@@ -1,8 +1,5 @@
 # Entscheidungsprotokoll: Offline & Caching
 
-> **Entwurf (Person 2).** Person 1 ergänzt/korrigiert vor der Abgabe und trägt ihre
-> Testergebnisse in die markierten Stellen ein (`TODO Person 1`).
-
 Grundlage ist das Konzept in [02-offline-strategie-konzept.md](02-offline-strategie-konzept.md),
 umgesetzt in `nuxt.config.ts` (Abschnitt `pwa.workbox`). Belege zu den Szenarien liegen in
 [04-verifikations-nachweis.md](04-verifikations-nachweis.md).
@@ -29,6 +26,9 @@ Session- und Speaker-Seiten sind vorgerendert (SSG laut Rendering-ADR).
 `_payload.json` stehen in der Precache-Liste. Eine eigene `runtimeCaching`-Regel ist nicht
 nötig, weil der Precache vorher antwortet. Damit die Seitendaten offline gefunden werden,
 ignoriert der Service Worker den Parameter `_b` (Build-ID), den Nuxt an `_payload.json` anhängt.
+Aus demselben Grund ignoriert er die sechs Filter-Parameter (`day`, `time`, `room`, `track`,
+`level`, `speaker`). Filter wirken laut Rendering-ADR nur im Browser, ein gefilterter Link wie
+`/sessions?day=2026-09-16` bekommt offline deshalb dieselbe vorgerenderte Seite wie `/sessions`.
 
 ### Konsequenzen
 
@@ -82,7 +82,8 @@ Stale-While-Revalidate, Schriftdateien mit Cache-First).
 ### Konsequenzen
 
 - App-Shell, Tokens und Icons sind nach der Installation vollständig offline verfügbar.
-- Schriften werden nur gespeichert, wenn sie online schon einmal geladen wurden. Beim Test fehlten sie offline teilweise, dann greift eine Systemschrift (siehe Szenario iii). Selbst hosten wäre die robustere Lösung.
+- Schriften sind erst nach dem ersten Online-Besuch offline verfügbar, vorher greift eine Systemschrift. Selbst hosten wäre die robustere Lösung.
+- Ein anfänglicher Fehler durch eine undurchsichtige Antwort (Status 0) im Font-Cache wurde mit `crossorigin` am Stylesheet-Link behoben. Seitdem werden Font-CSS und Schriftdateien als lesbare Antworten (Status 200) gecacht (siehe Szenario ii).
 
 ## Testszenarien
 
@@ -102,7 +103,7 @@ Worker, übertragen werden 0 kB. Detailseiten und ihre `_payload.json` antworten
 mit 200 aus dem Precache. Vor dem `_b`-Fix schlugen genau diese Payload-Anfragen offline mit
 `ERR_CONNECTION_REFUSED` fehl, die Seiten wurden trotzdem angezeigt.
 - **Ergebnis Person 2:** bestanden.
-- **Ergebnis Person 1:** `TODO Person 1` (Browser/Betriebssystem, Beobachtung)
+- **Ergebnis Person 1:** Funktioniert vollständig. Cache-First über den Precache wirkt wie im Konzept beschrieben, auch beim Weiterklicken und Filtern.
 
 ### ii. „Mein Programm“ offline öffnen, nachdem Sessions hinzugefügt wurden
 
@@ -114,20 +115,19 @@ Seiten-Hülle stammt aus dem Precache, die gemerkten IDs aus dem `localStorage`.
 Versuch scheiterte offline das Google-Fonts-CSS, weil noch eine veraltete Antwort im Cache
 lag. Beim nächsten Online-Besuch wurde sie ersetzt, danach trat der Fehler nicht mehr auf.
 - **Ergebnis Person 2:** bestanden.
-- **Ergebnis Person 1:** `TODO Person 1`
+- **Ergebnis Person 1:** bestätigt (Brave, Offline-Emulation). Zusätzlich offline eine Session 
+entfernt und neu geladen, die Änderung bleibt erhalten.
 
 ### iii. Erstbesuch ohne vorheriges Online-Laden (Grenzfall)
 
-- **Ausgangslage:** Inkognito-Fenster, also kein Service Worker und kein Cache.
-- **Aktion:** Vor dem Aufruf auf „Offline“ geschaltet, dann `localhost:3000/sessions` geöffnet.
-Zusätzlich: Erstbesuch über gedrosseltes 3G, kurz danach offline geschaltet und neu geladen.
-- **Beobachtetes Verhalten:** In beiden Fällen erscheint die Browser-Fehlerseite
-(`ERR_INTERNET_DISCONNECTED`). Über 3G war die Seite zwar schnell sichtbar, die Installation
-des Precache (112 Dateien, ca. 550 kB) aber noch nicht fertig. Workbox verwirft eine
-unvollständige Installation. Erst nachdem „activated and is running“ angezeigt wurde,
-funktionierte die App offline.
-- **Bewertung:** Akzeptabel, weil ein Service Worker technisch erst nach einem erfolgreichen
-Online-Besuch arbeiten kann. Die App sollte deshalb vor der Konferenz bei stabilem Netz
-geöffnet oder installiert werden.
-- **Ergebnis Person 2:** erwartetes Verhalten bestätigt.
-- **Ergebnis Person 1:** `TODO Person 1`
+- **Ausgangslage:** Kein Service Worker und kein Cache (Inkognito-Fenster bzw. leeres Browserprofil).
+- **Aktion:** (a) Offline geschaltet, dann `/sessions` geöffnet. (b) Online geöffnet, sofort
+offline geschaltet und neu geladen. (c) Gegenprobe: online gewartet, bis der Service Worker
+aktiv war, dann offline neu geladen.
+- **Beobachtetes Verhalten:** Bei a und b erscheint die Browser-Fehlerseite
+(`ERR_INTERNET_DISCONNECTED`), weil der Precache (112 Dateien, ca. 550 kB) noch nicht
+vollständig installiert ist. Bei c lädt die Übersicht vollständig.
+- **Bewertung:** Akzeptabel, denn ein Service Worker antwortet erst nach einem vollständigen
+Online-Besuch. Die App sollte daher vor der Konferenz bei stabilem Netz geöffnet werden.
+- **Ergebnis Person 2:** bestätigt (Chrome, auch über gedrosseltes 3G).
+- **Ergebnis Person 1:** bestätigt (Brave).
