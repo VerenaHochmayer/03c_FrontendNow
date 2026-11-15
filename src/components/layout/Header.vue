@@ -9,7 +9,10 @@ const { conference } = useConferenceData()
         <span class="bg-accent-primary px-1 text-on-accent">Frontend</span>Now
         <span class="sr-only">– {{ conference.tagline }}</span>
       </NuxtLink>
-      <LayoutNavigation />
+      <div class="flex flex-wrap items-center gap-4">
+        <LayoutOfflineBadge />
+        <LayoutNavigation />
+      </div>
     </div>
   </header>
 </template>
