@@ -26,7 +26,8 @@ ist.
 
 **Fonts:** IBM Plex kommt derzeit von Google Fonts, einem fremden Server. Wir cachen die
 Schriftdateien Cache-First zur Laufzeit. Sie ändern sich nie, und ohne sie fiele die App
-offline auf Systemschriften zurück.
+offline auf Systemschriften zurück. Das kleine Font-CSS, das auf die Dateien verweist,
+cachen wir Stale-While-Revalidate, weil Google es gelegentlich anpasst.
 
 ### 2. Programmdaten (Sessions, Speaker) → Cache-First (Precache)
 
@@ -63,8 +64,8 @@ Programm, Infokarten, Speaker und Filter. Merken und Entfernen läuft ohnehin nu
 Browser, es gibt nichts, das mit einem Server abgeglichen werden müsste. Verloren geht
 höchstens eine neue Version, die erst beim nächsten Kontakt mit dem Netz geladen wird.
 Damit Besucher\*innen wissen, dass sie gerade offline sind und eventuell einen älteren
-Stand sehen, zeigt der im Architektur-ADR geplante `LayoutOfflineBadge` einen Hinweis
-im Header an.
+Stand sehen, zeigt der `LayoutOfflineBadge` aus dem Architektur-ADR einen Hinweis im
+Header an, sobald die Verbindung abbricht.
 
 Ohne Service Worker, etwa beim allerersten Besuch ohne Netz, bleibt die App unerreichbar.
 Deshalb sollte die Installation vor der Konferenz erfolgen, solange es noch zuverlässiges
@@ -75,6 +76,6 @@ Netz gibt.
 | Datentyp | Strategie | Grund |
 |---|---|---|
 | App-Shell, JS, CSS, Icons | Cache-First (Precache) | Ändert sich nur mit neuem Build |
-| Fonts (Google Fonts) | Cache-First (Laufzeit) | Ändern sich nie, offline sonst Systemschrift |
+| Fonts (Google Fonts) | Dateien Cache-First, CSS Stale-While-Revalidate (Laufzeit) | Dateien ändern sich nie, offline sonst Systemschrift |
 | Sessions und Speaker (HTML + Bundle) | Cache-First (Precache), SWR bei Laufzeitdaten | Nach Veröffentlichung stabil |
 | „Mein Programm“ | Daten im `localStorage`, Hülle im Precache | Start-URL muss offline erreichbar sein |

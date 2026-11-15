@@ -45,8 +45,10 @@ Wir verwenden **Nuxt** (Option A) mit folgendem Tooling:
 | Styling       | Tailwind CSS v4                        | Semantische Design Tokens werden per `@theme` zu Klassen           |
 | State         | Composables + `useState`               | Reicht für „Mein Programm“, Pinia wäre zusätzlicher Aufwand        |
 | Paketmanager  | npm                                    | Bei Node.js dabei                                                  |
+| PWA           | `@vite-pwa/nuxt` (Schritt 3)           | Erzeugt Manifest und Service Worker aus der `nuxt.config.ts`, kennt alle vorgerenderten Seiten |
 
-Module für PWA und Dark Mode folgen in den jeweiligen Schritten.
+Das PWA-Modul wurde in Schritt 3 ergänzt (Begründung: [docs/schritt3/01-pwa-setup.md](../schritt3/01-pwa-setup.md)).
+Ein Modul für den Dark Mode folgt im entsprechenden Schritt.
 
 ## Konsequenzen
 
